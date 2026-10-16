@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fossil Fuels Video</title>
+<meta name="description" content="IGCSE Environmental Management 0680: an interactive video on how coal, oil and natural gas form, with questions that pause the video.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a guided reading page. Section chips across the top; each section is the notes (with a diagram) followed by a check card that must be passed before moving on. */
+:root {
+  --bg: #edf2f1; --surface: #ffffff; --sunk: #f5f8f7; --ink: #14262b; --muted: #56696e; --line: #d2dedc;
+  --accent: #1c6676; --accent-ink: #ffffff; --accent-soft: #dcedf0;
+  --good: #1f7449; --good-bg: #e2f2e8; --bad: #b1372e; --bad-bg: #fbe8e5; --hint: #8d600c; --hint-bg: #fbf0d9;
+  --enz: #c9dfe4; --enz-line: #1c6676; --sub: #5aa469; --sub-end: #2c6a3a; --inh: #d9534f; --comp: #c0392b; --nonc: #2b5fb8;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e191c; --surface: #162428; --sunk: #12201f; --ink: #e2eceb; --muted: #9bb0b2; --line: #2a3e42;
+    --accent: #63b8c8; --accent-ink: #08181b; --accent-soft: #1b3940;
+    --good: #72d09d; --good-bg: #163226; --bad: #f08d81; --bad-bg: #3b201c; --hint: #e6b85e; --hint-bg: #352a13;
+    --enz: #23474f; --enz-line: #63b8c8; --sub: #6cc07c; --sub-end: #b5e8bf; --inh: #f07b72; --comp: #f07b72; --nonc: #7fa8f0;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.6; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+[hidden] { display: none !important; }
+.wrap { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 56px; display: flex; flex-direction: column; gap: 16px; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; line-height: 1.15; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(26px, 4vw, 34px); letter-spacing: -.01em; }
+h2 { font-size: clamp(22px, 3vw, 27px); }
+h4 { font-size: 17px; }
+p { margin: 0; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+@media (max-width: 520px) { .card { padding: 15px; } body { font-size: 16px; } }
+
+/* Section chips */
+.chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: thin; }
+.chips button { flex: 0 0 auto; font: inherit; font-size: 13px; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px 5px 6px; cursor: pointer; display: flex; gap: 6px; align-items: center; white-space: nowrap; }
+.chips button .n { font-family: var(--font-mono); font-size: 11px; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: var(--sunk); border: 1px solid var(--line); }
+.chips button.done .n { background: var(--good); color: var(--surface); border-color: var(--good); }
+.chips button[aria-current="step"] { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+.chips button[aria-current="step"] .n { background: var(--accent-ink); color: var(--accent); border-color: var(--accent-ink); }
+.chips button:disabled { opacity: .5; cursor: not-allowed; }
+button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Notes */
+.notes { display: flex; flex-direction: column; gap: 12px; max-width: 70ch; }
+.notes b { font-weight: 700; }
+ul.bonds { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 2px; }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 620px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.tile { background: var(--sunk); border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.tile.comp h4 { color: var(--comp); } .tile.nonc h4 { color: var(--nonc); }
+.note { font-size: 14px; color: var(--muted); }
+
+/* Figures */
+.fig { margin: 0; display: flex; flex-direction: column; gap: 8px; align-items: stretch; max-width: 100%; }
+.fig svg { width: 100%; max-width: 640px; height: auto; display: block; margin: 0 auto; }
+
+.fig figcaption { font-size: 14px; color: var(--muted); text-align: center; }
+.enz { fill: var(--enz); stroke: var(--enz-line); stroke-width: 2; }
+.sub { fill: var(--sub); }
+.sub-end { fill: var(--sub-end); }
+.inh { fill: var(--inh); }
+.figbg { fill: var(--surface); }
+.panel { fill: var(--sunk); stroke: var(--line); }
+.lbl { fill: var(--ink); font-family: var(--font-body); font-size: 14px; }
+.small-t { font-size: 12px; }
+.inh-t { fill: var(--inh); font-weight: 700; }
+.cap { fill: var(--muted); font-family: var(--font-body); font-size: 14px; }
+.lead { stroke: var(--muted); stroke-width: 1; }
+.bad-mark line { stroke: var(--bad); stroke-width: 3.5; stroke-linecap: round; }
+.good-mark { fill: none; stroke: var(--good); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.arrow { stroke: var(--muted); stroke-width: 2; }
+.arrow-head { fill: var(--muted); }
+.cone { fill: var(--good); opacity: .35; stroke: var(--good); stroke-width: 1; }
+.axis { stroke: var(--ink); stroke-width: 1.6; }
+.grid { stroke: var(--line); stroke-width: 1; }
+.dash { stroke: var(--muted); stroke-width: 1.4; stroke-dasharray: 6 5; }
+.guide { fill: none; stroke-width: 1.3; stroke-dasharray: 4 4; }
+.num { fill: var(--muted); font-family: var(--font-mono); font-size: 12px; }
+.axis-t { fill: var(--ink); font-family: var(--font-body); font-size: 14px; }
+.curve .line { fill: none; stroke-width: 3; }
+.curve-t { font-weight: 700; font-size: 14px; }
+.c-normal .line { stroke: var(--ink); } .c-normal .guide { stroke: var(--ink); } .c-normal .curve-t { fill: var(--ink); }
+.c-comp .line { stroke: var(--comp); } .c-comp .guide { stroke: var(--comp); } .c-comp .curve-t { fill: var(--comp); }
+.c-nonc .line { stroke: var(--nonc); } .c-nonc .guide { stroke: var(--nonc); } .c-nonc .curve-t { fill: var(--nonc); }
+#inhib-fig .curve.off { display: none; }
+.toggles { display: flex; gap: 8px; flex-wrap: wrap; }
+.tog { font: inherit; font-size: 14px; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.tog.on { border-color: var(--accent); background: var(--accent-soft); font-weight: 700; }
+.tog { display: inline-flex; align-items: center; gap: 8px; }
+.tog .sw { width: 18px; height: 4px; border-radius: 2px; display: inline-block; opacity: .35; }
+.tog.on .sw { opacity: 1; }
+.sw-normal { background: var(--ink); } .sw-comp { background: var(--comp); } .sw-nonc { background: var(--nonc); }
+.tog:disabled { cursor: default; }
+.sat-caps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; font-size: 13px; color: var(--muted); }
+.sat-caps b { color: var(--ink); }
+@media (max-width: 560px) { .sat-caps { grid-template-columns: minmax(0, 1fr); } }
+
+/* Check card */
+.check { border-top: 4px solid var(--accent); }
+.qhead { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.stage { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); }
+.stage.backup { background: var(--hint-bg); color: var(--hint); }
+.stage.retry { background: var(--accent); color: var(--accent-ink); }
+.trail { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.trail b { font-weight: 500; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--line); }
+.trail b.done { background: var(--sunk); border-color: transparent; text-decoration: line-through; }
+.trail b.on { border-color: var(--hint); color: var(--hint); }
+.stem { font-size: 18px; font-weight: 700; max-width: 66ch; }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; text-align: left; font: inherit; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: 8px; padding: 10px 12px; cursor: pointer; }
+.opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.opt:disabled { cursor: default; }
+.opt .k { width: 30px; height: 30px; border-radius: 6px; display: grid; place-items: center; font-family: var(--font-mono); background: var(--sunk); border: 1px solid var(--line); }
+.opt .mark { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+.opt.right { border-color: var(--good); background: var(--good-bg); } .opt.right .k { background: var(--good); color: var(--surface); border-color: var(--good); } .opt.right .mark { color: var(--good); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-bg); } .opt.wrong .k { background: var(--bad); color: var(--surface); border-color: var(--bad); } .opt.wrong .mark { color: var(--bad); }
+.opt.dim { opacity: .55; }
+.log { display: flex; flex-direction: column; gap: 8px; }
+.msg { border-radius: 8px; padding: 11px 14px; }
+.msg h3 { font-family: var(--font-body); font-size: 15px; margin: 0 0 3px; }
+.msg.good { background: var(--good-bg); } .msg.good h3 { color: var(--good); }
+.msg.bad { background: var(--bad-bg); } .msg.bad h3 { color: var(--bad); }
+.msg.hint { background: var(--hint-bg); } .msg.hint h3 { color: var(--hint); }
+.btn { font: inherit; font-weight: 700; border: 0; border-radius: 8px; padding: 11px 20px; cursor: pointer; background: var(--accent); color: var(--accent-ink); }
+.btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.passed { display: flex; flex-direction: column; gap: 6px; }
+.passed div { display: flex; gap: 10px; align-items: baseline; font-size: 15px; }
+.tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
+.tag.first { background: var(--good-bg); color: var(--good); } .tag.help { background: var(--hint-bg); color: var(--hint); } .tag.miss { background: var(--bad-bg); color: var(--bad); }
+.big { font-family: var(--font-display); font-weight: 700; font-size: clamp(40px, 7vw, 56px); line-height: 1; font-variant-numeric: tabular-nums; }
+.big small { font-size: .45em; color: var(--muted); font-weight: 500; }
+.secs { display: flex; flex-direction: column; gap: 8px; }
+.secs .row { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.linkbtn { font: inherit; font-size: 14px; color: var(--accent); background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
+ol.keys { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+@media (max-width: 600px) {
+  .fig svg .lbl, .fig svg .cap, .fig svg .axis-t { font-size: 21px; }
+  .fig svg .curve-t { font-size: 20px; }
+  .fig svg .num { font-size: 17px; }
+  .fig svg .small-t { font-size: 18px; }
+}
+
+.sub { color: var(--muted); margin-top: 6px; font-size: 15px; }
+.vbox { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 8px; overflow: hidden; }
+.vbox iframe, .vbox #player { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.novid { position: absolute; inset: 0; background: var(--sunk); color: var(--ink); padding: 20px; display: flex; flex-direction: column; justify-content: center; gap: 8px; font-size: 15px; overflow: auto; }
+.novid p { margin: 0; } .novid a { color: var(--accent); }
+.seek { position: relative; height: 10px; border-radius: 5px; background: var(--sunk); border: 1px solid var(--line); }
+.seek .played { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent-soft); border-radius: 5px; }
+.seek #marks i { position: absolute; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; transform: rotate(45deg); background: var(--surface); border: 2px solid var(--hint); }
+.seek #marks i.done { background: var(--good); border-color: var(--good); }
+.vmeta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 14px; font-size: 14px; color: var(--muted); }
+#status { color: var(--hint); font-weight: 700; min-height: 1.2em; }
+.qhead .at { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.qhead .linkbtn { margin-left: auto; }
+.tx { max-height: 340px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; border: 1px solid var(--line); border-radius: 8px; padding: 6px; background: var(--sunk); position: relative; }
+.ln { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 10px; text-align: left; font: inherit; font-size: 15px; color: var(--ink); background: none; border: 0; border-radius: 6px; padding: 6px 8px; cursor: pointer; line-height: 1.45; }
+.ln:hover { background: var(--accent-soft); }
+.ln .ts { font-family: var(--font-mono); font-size: 12px; color: var(--muted); padding-top: 2px; }
+.ln.on { background: var(--surface); box-shadow: inset 3px 0 0 var(--accent); }
+.txhead { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.txhead label { font-size: 14px; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
+.howto { margin: 0; padding-left: 22px; font-size: 15px; display: flex; flex-direction: column; gap: 4px; }
+.credit { font-size: 13px; color: var(--muted); }
+.chips button[aria-current] { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+.chips button[aria-current] .n { background: var(--accent-ink); color: var(--accent); }
+.chips button .n { width: auto; padding: 0 6px; border-radius: 999px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">IGCSE Environmental Management 0680 · Year 10 · 1.4.1</div>
+    <h1>How fossil fuels are formed</h1>
+    <p class="sub">An interactive video: it stops for questions as you watch.</p>
+  </header>
+  <section class="card">
+    <ol class="howto">
+      <li>Press play. The video <b>stops by itself</b> when it's time for a question.</li>
+      <li>If you get a question wrong, you'll get two short back-up questions, then a second try.</li>
+      <li>You can go back at any time, but you can't skip ahead past a question.</li>
+    </ol>
+  </section>
+  <section class="card" id="vcard">
+    <div class="vbox" id="vbox"><div id="player"></div></div>
+    <div class="seek" id="seek" aria-hidden="true"><div class="played" id="played"></div><div id="marks"></div></div>
+    <div class="vmeta"><span id="qcount"></span><span id="status" aria-live="polite"></span></div>
+    <nav class="chips" id="chaps" aria-label="Chapters"></nav>
+  </section>
+  <section class="card check" id="qcard" hidden><div id="qzone"></div></section>
+  <section class="card" id="endcard" hidden></section>
+  <section class="card">
+    <div class="txhead"><h2>Transcript</h2><label><input type="checkbox" id="follow" checked> Follow the video</label></div>
+    <div class="tx" id="tx"></div>
+    <p class="credit">Video: “How fossil fuels are formed” by Freesciencelessons, on YouTube. Transcript tidied from the auto-captions.</p>
+  </section>
+</div>
+<script>
+/* ===== Content: How fossil fuels are formed (video by Freesciencelessons) ===== */
+const VIDEO_ID = "14XIKuOZ2Yw";
+const VIDEO_END = 149;
+
+const CHAPTERS = [
+  { t: 0, title: "Intro" }, { t: 17, title: "Recap" }, { t: 36, title: "Fossil fuels" },
+  { t: 62, title: "Coal" }, { t: 87, title: "Oil" }, { t: 109, title: "Natural gas" }
+];
+
+/* Cleaned transcript (auto-caption errors corrected). t = start time in seconds. */
+const TRANSCRIPT = [
+  [8, "Hi, and welcome back to Freesciencelessons."],
+  [11, "By the end of this video you should be able to describe how fossil fuels are formed. These include coal, oil and gas."],
+  [17, "In the last video we looked at how the levels of gases in the atmosphere have changed over time."],
+  [22, "We saw that the early atmosphere contained very large amounts of carbon dioxide but virtually no oxygen, whereas the atmosphere today contains plenty of oxygen but only small amounts of carbon dioxide."],
+  [36, "We saw that photosynthesis takes in carbon dioxide and produces oxygen."],
+  [42, "Some of that carbon ends up in fossil fuels, and we're looking at that in this video."],
+  [47, "The first thing to understand is that fossil fuels are formed over millions of years."],
+  [53, "Fossil fuels are non-renewable. In other words, if we keep using them, they'll run out."],
+  [57, "We're going to explore how coal, oil and gas are formed, so let's start by looking at coal."],
+  [62, "Coal is formed from the remains of ferns and trees."],
+  [68, "If these die in marshy wetlands, they do not decompose. That can be due to a lack of oxygen or acidic conditions."],
+  [76, "These both prevent bacteria from carrying out decomposition."],
+  [80, "Over time, the plant remains are covered with sediment and compressed. High temperature and pressure create coal."],
+  [87, "Now, another really important fossil fuel is oil."],
+  [90, "Crude oil is formed from plankton, which are tiny plants and animals found in the sea."],
+  [95, "When these die, they settle in mud on the seabed. Again, if oxygen is not present, they do not decompose."],
+  [104, "Over time, they're compressed by sediment, and heat and pressure then convert them into crude oil."],
+  [109, "The third fossil fuel is natural gas. Natural gas is mainly the hydrocarbon methane."],
+  [115, "We often find natural gas near deposits of oil, and that's because natural gas is formed from plankton in a similar way to oil."],
+  [125, "Now, the key fact is that all fossil fuels contain trapped carbon, and that carbon was part of the carbon dioxide taken in by photosynthesis."],
+  [134, "In a later video we look at the effects that burning fossil fuels is having on the planet."],
+  [140, "Remember, you'll find plenty of questions on fossil fuels in my revision workbook."]
+];
+
+/* Questions. t = where the video stops; from = where "Rewatch this part" goes back to. Correct answer is listed first and shuffled on screen. */
+const Q = (o) => Object.assign({ a: 0 }, o);
+const QUESTIONS = [
+ Q({ id: "v1", t: 47, from: 17, q: "Some of the carbon in fossil fuels was once carbon dioxide in the air. Which process took that carbon dioxide in?",
+   o: ["Photosynthesis", "Aerobic respiration", "Burning (combustion)", "Decomposition by bacteria"],
+   w: { 1: "Respiration gives out carbon dioxide. The video says the process takes in carbon dioxide and produces oxygen.", 2: "Combustion (burning) releases carbon dioxide; it doesn't take it in.", 3: "Decomposition releases carbon dioxide. In fact, fossil fuels form because decomposition is stopped." },
+   x: "Photosynthesis takes in carbon dioxide and produces oxygen. Some of that carbon ended up locked in fossil fuels.",
+   b: [ Q({ q: "What does photosynthesis produce, as well as glucose?", o: ["Oxygen", "Carbon dioxide", "Methane", "Nitrogen"], x: "Photosynthesis takes in carbon dioxide and gives out oxygen." }),
+        Q({ q: "Which organisms carry out photosynthesis?", o: ["Plants and algae", "Bacteria that cause decay", "All animals", "Fungi"], x: "Plants and algae (including the plankton that formed oil) photosynthesise." }) ] }),
+ Q({ id: "v2", t: 62, from: 47, q: "The video says fossil fuels are non-renewable. What does that mean?",
+   o: ["If we keep using them, they will run out", "They cannot be burned more than once", "They can only be found deep under the sea", "They form again within a few years"],
+   w: { 1: "Every fuel can only be burned once, even renewable ones like wood. Non-renewable means the supply runs out.", 2: "Coal is mined on land. Where they're found doesn't make them non-renewable.", 3: "The opposite: they take millions of years to form." },
+   x: "They take millions of years to form, so once we use them up, they can't be replaced.",
+   b: [ Q({ q: "How long do fossil fuels take to form?", o: ["Millions of years", "Hundreds of years", "Thousands of years", "Tens of years"], x: "The video says fossil fuels are formed over millions of years." }),
+        Q({ q: "Which of these is renewable?", o: ["Wind", "Coal", "Crude oil", "Natural gas"], x: "Wind won't run out. Coal, oil and gas are fossil fuels." }) ] }),
+ Q({ id: "v3", t: 87, from: 62, q: "Why don't the ferns and trees decompose when they die in marshy wetlands?",
+   o: ["Lack of oxygen or acidic conditions stop the bacteria", "The water is far too cold for decomposers to survive", "Ferns and trees contain no carbon compounds", "The wind blows the bacteria out of the swamp"],
+   w: { 1: "Temperature isn't the reason given. It's the lack of oxygen or the acidic conditions.", 2: "Plants are full of carbon compounds. That's where the carbon in coal comes from.", 3: "Bacteria are in the water and mud. They can't work there because there's no oxygen or it's too acidic." },
+   x: "A lack of oxygen or acidic conditions prevents bacteria from carrying out decomposition, so the plant remains are preserved.",
+   b: [ Q({ q: "Which organisms normally carry out decomposition?", o: ["Bacteria (and fungi)", "Green plants in the swamp", "Plankton", "Ferns"], x: "Decomposers such as bacteria and fungi break down dead material." }),
+        Q({ q: "What two conditions does the video say stop decomposition?", o: ["No oxygen or acidic conditions", "Bright light or strong wind", "Plenty of oxygen or very warm water", "Sand or salty water"], x: "Lack of oxygen and acidic conditions both stop bacteria decomposing the remains." }) ] }),
+ Q({ id: "v4", t: 87, from: 62, q: "Which is the correct order for the formation of coal?",
+   o: ["Plants die → covered by sediment → heated, compressed → coal", "Plants die → decompose fully → covered with sediment → coal", "Covered by sediment → plants grow → plants die → coal", "Plants die → heated → decompose in air → coal"],
+   w: { 1: "If the plants decomposed fully, there would be nothing left to become coal.", 2: "The plants grow and die first; then their remains are covered with sediment.", 3: "Decomposing in air would destroy the remains. They must be buried, then compressed and heated." },
+   x: "The plant remains don't decompose. They are covered with sediment and compressed, and high temperature and pressure create coal.",
+   b: [ Q({ q: "What covers the plant remains over time?", o: ["Sediment", "Seawater only", "Ice", "Air"], x: "Layers of sediment cover and compress the remains." }),
+        Q({ q: "What finally turns the buried plant remains into coal?", o: ["High temperature and pressure", "Sunlight and oxygen", "Rain and wind", "Bacteria and fungi"], x: "High temperature and pressure create coal." }) ] }),
+ Q({ id: "v5", t: 109, from: 87, q: "Crude oil is formed from…",
+   o: ["plankton that lived in the sea", "ferns and trees in marshy wetlands", "dinosaurs that died on land", "sand and mud on the seabed"],
+   w: { 1: "That's coal. Oil comes from sea life.", 2: "A popular myth. The video says oil comes from plankton.", 3: "The mud is where the plankton settle, but the oil comes from the plankton remains, not the mud." },
+   x: "Crude oil forms from plankton: tiny plants and animals in the sea.",
+   b: [ Q({ q: "What are plankton?", o: ["Tiny plants and animals in the sea", "Large fish on the seabed", "Ferns that grow in wetlands", "Grains of sand in mud"], x: "Plankton are tiny plants and animals found in the sea." }),
+        Q({ q: "Where do the dead plankton settle?", o: ["In mud on the seabed", "Floating on the sea surface", "In marshy wetlands", "On beaches"], x: "They settle in mud on the seabed." }) ] }),
+ Q({ id: "v6", t: 109, from: 87, q: "What is the same about how coal and crude oil form?",
+   o: ["Remains don't decompose, then are buried and heated", "Both form from plants in marshy wetlands", "Both form within a few hundred years", "Both form when bacteria fully break down the remains"],
+   w: { 1: "Only coal forms in wetlands. Oil forms from plankton in the sea.", 2: "Both take millions of years.", 3: "The opposite: both form because decomposition is stopped." },
+   x: "In both, the remains don't decompose (no oxygen), are compressed by sediment, and heat and pressure change them over millions of years.",
+   b: [ Q({ q: "Why don't the dead plankton decompose on the seabed?", o: ["Oxygen is not present", "The water is too salty for plankton", "The mud is too hot", "Plankton are not living things"], x: "As with coal, without oxygen the remains don't decompose." }),
+        Q({ q: "What converts the buried plankton into crude oil?", o: ["Heat and pressure", "Oxygen and sunlight", "Bacteria", "Sea water"], x: "Heat and pressure convert the remains into crude oil." }) ] }),
+ Q({ id: "v7", t: 125, from: 109, q: "Why is natural gas often found near deposits of oil?",
+   o: ["It forms from plankton in a similar way to oil", "It is made when crude oil is burned", "Oil companies pump it there to store it", "It forms from ferns and trees in the same wetlands"],
+   w: { 1: "Burning oil makes carbon dioxide and water, not natural gas.", 2: "It formed there naturally, millions of years ago.", 3: "That's coal. Natural gas forms from plankton, like oil." },
+   x: "Natural gas forms from plankton in a similar way to oil, so they are found together.",
+   b: [ Q({ q: "Natural gas is mainly…", o: ["methane", "oxygen", "carbon dioxide", "nitrogen"], x: "Natural gas is mainly the hydrocarbon methane." }),
+        Q({ q: "Which two fossil fuels both form from plankton?", o: ["Oil and natural gas", "Coal and oil", "Coal and natural gas", "Only coal"], x: "Oil and natural gas both form from plankton; coal forms from plants." }) ] }),
+ Q({ id: "v8", t: 134, from: 109, q: "The video says all fossil fuels contain trapped carbon. Where did that carbon come from?",
+   o: ["Carbon dioxide taken in by photosynthesis", "Oxygen in the early atmosphere", "Carbon dioxide released by decomposers in mud", "Hot rock that was melted by volcanoes"],
+   w: { 1: "Oxygen contains no carbon.", 2: "Decomposition was stopped. The carbon came from carbon dioxide taken in by photosynthesis.", 3: "The carbon came from living things, not from melted rock." },
+   x: "The carbon was part of the carbon dioxide taken in by photosynthesis millions of years ago.",
+   b: [ Q({ q: "Which gas contains carbon?", o: ["Carbon dioxide", "Oxygen", "Nitrogen", "Hydrogen"], x: "Carbon dioxide is CO₂: it contains carbon." }),
+        Q({ q: "During photosynthesis, plants and plankton…", o: ["take in carbon dioxide", "give out carbon dioxide", "take in oxygen only", "make methane gas"], x: "Photosynthesis takes carbon dioxide from the air or water and uses it to build the organism's body." }) ] })
+];
+
+const SUMMARY = [
+  "Fossil fuels (coal, oil and natural gas) form over millions of years, so they are non-renewable.",
+  "Coal forms from ferns and trees that die in marshy wetlands. A lack of oxygen or acidic conditions stops bacteria decomposing them.",
+  "The plant remains are covered by sediment and compressed; high temperature and pressure create coal.",
+  "Crude oil forms from plankton that settle in mud on the seabed. Without oxygen they don't decompose; sediment, heat and pressure turn them into oil.",
+  "Natural gas is mainly methane. It forms from plankton in a similar way to oil, so it is often found near oil.",
+  "The carbon in fossil fuels came from carbon dioxide taken in by photosynthesis."
+];
+
+/* ===== Interactive video engine ===== */
+const KEY = "igcse-em-fossil-fuels-video-v1";
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const LET = "ABCD";
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const mmss = t => Math.floor(t / 60) + ":" + String(Math.floor(t % 60)).padStart(2, "0");
+
+let P = { res: {} };
+try { const raw = localStorage.getItem(KEY); if (raw) P = Object.assign(P, JSON.parse(raw)); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) {} };
+
+/* Balanced answer positions: each letter is correct equally often, never 3 times running. */
+const bags = { main: [], back: [] }, hist = { main: [], back: [] };
+function deal(name, n) {
+  const bag = bags[name], h = hist[name];
+  const ok = t => t < n && !(h.length >= 2 && h[h.length - 1] === t && h[h.length - 2] === t);
+  let k = -1;
+  for (let tries = 0; tries < 3 && k < 0; tries++) { for (let j = bag.length - 1; j >= 0; j--) if (ok(bag[j])) { k = j; break; } if (k < 0) bag.unshift(...shuffle([0, 1, 2, 3])); }
+  const t = k >= 0 ? bag.splice(k, 1)[0] : 0; h.push(t); return t;
+}
+function orderFor(n, correct, t) { const rest = shuffle([...Array(n).keys()].filter(i => i !== correct)); rest.splice(t, 0, correct); return rest; }
+const order = (q, bag) => orderFor(q.o.length, q.a, deal(bag, q.o.length));
+
+/* ---------- player ---------- */
+let player = null, ready = false, mode = "video", R = null;
+const nextQ = () => QUESTIONS.find(q => !P.res[q.id]);
+const limit = () => { const q = nextQ(); return q ? q.t : Infinity; };
+const allDone = () => !nextQ();
+
+window.onYouTubeIframeAPIReady = function () {
+  player = new YT.Player("player", {
+    videoId: VIDEO_ID,
+    playerVars: { rel: 0, playsinline: 1, modestbranding: 1, iv_load_policy: 3, cc_load_policy: 0 },
+    events: {
+      onReady: () => {
+        ready = true; clearTimeout(failTimer);
+        const done = QUESTIONS.filter(q => P.res[q.id]);
+        if (done.length && !allDone()) { const t = done[done.length - 1].t; player.cueVideoById({ videoId: VIDEO_ID, startSeconds: t }); status(`Welcome back. The video will start from ${mmss(t)}, where you left off.`); }
+      },
+      onError: () => noVideo(),
+      onStateChange: e => { if (e.data === 0 && allDone()) showEnd(true); }
+    }
+  });
+};
+const failTimer = setTimeout(() => { if (!ready) noVideo(); }, 12000);
+(function () { const s = document.createElement("script"); s.src = "https://www.youtube.com/iframe_api"; s.onerror = () => noVideo(); document.head.appendChild(s); })();
+
+function noVideo() {
+  if (mode === "novideo" || ready) return;
+  mode = "novideo";
+  $("#vbox").innerHTML = `<div class="novid"><p><b>The video can't play here.</b> Your school or home network may be blocking YouTube.</p>
+    <p>Try <a href="https://www.youtube.com/watch?v=${VIDEO_ID}" target="_blank" rel="noopener">opening it on YouTube</a> in another tab, or read the transcript below, then answer the questions.</p></div>`;
+  $("#seek").hidden = true; $("#chaps").hidden = true;
+  if (!allDone()) ask(nextQ()); else showEnd(false);
+}
+
+function tick() {
+  if (mode !== "video" || !ready || !player.getCurrentTime) return;
+  const t = player.getCurrentTime(), playing = player.getPlayerState() === 1;
+  const q = nextQ();
+  if (q && t >= q.t - 0.15 && (playing || !R)) {
+    if (playing) player.pauseVideo();
+    if (t > q.t + 1.5) player.seekTo(q.t, true);
+    if (!R) ask(q);
+  }
+  paintTime(t);
+}
+setInterval(tick, 200);
+
+function seek(t) {
+  if (t > limit() + 0.01) { status("Answer the question first: you can't skip ahead past it. You can always go back."); return; }
+  if (mode !== "video" || !ready) return;
+  player.seekTo(t, true); player.playVideo();
+}
+
+/* ---------- chapters, timeline, transcript ---------- */
+function renderChapters() {
+  $("#chaps").innerHTML = CHAPTERS.map((c, i) => `<button type="button" data-t="${c.t}"><span class="n">${mmss(c.t)}</span>${esc(c.title)}</button>`).join("");
+  $("#chaps").querySelectorAll("button").forEach(b => b.addEventListener("click", () => seek(+b.dataset.t)));
+}
+function renderBar() {
+  $("#marks").innerHTML = [...new Set(QUESTIONS.map(q => q.t))].map(t => { const qs = QUESTIONS.filter(q => q.t === t); const done = qs.every(q => P.res[q.id]);
+    return `<i class="${done ? "done" : ""}" style="left:${(t / VIDEO_END * 100).toFixed(2)}%" title="Question at ${mmss(t)}"></i>`; }).join("");
+  const n = QUESTIONS.filter(q => P.res[q.id]).length;
+  $("#qcount").textContent = `${n} of ${QUESTIONS.length} questions answered`;
+}
+function renderTranscript() {
+  $("#tx").innerHTML = TRANSCRIPT.map(([t, s], i) => `<button type="button" class="ln" data-t="${t}" data-i="${i}"><span class="ts">${mmss(t)}</span><span>${esc(s)}</span></button>`).join("");
+  $("#tx").querySelectorAll(".ln").forEach(b => b.addEventListener("click", () => seek(+b.dataset.t)));
+}
+let lastLine = -1, lastChap = -1;
+function paintTime(t) {
+  $("#played").style.width = Math.min(100, t / VIDEO_END * 100).toFixed(2) + "%";
+  let li = -1; TRANSCRIPT.forEach(([s], i) => { if (t >= s - 0.3) li = i; });
+  if (li !== lastLine) {
+    lastLine = li; const box = $("#tx");
+    box.querySelectorAll(".ln").forEach(b => b.classList.toggle("on", +b.dataset.i === li));
+    const el = box.querySelector(".ln.on"); if (el && $("#follow").checked) box.scrollTop = el.offsetTop - box.offsetTop - 40;
+  }
+  let ci = 0; CHAPTERS.forEach((c, i) => { if (t >= c.t) ci = i; });
+  if (ci !== lastChap) { lastChap = ci; $("#chaps").querySelectorAll("button").forEach((b, i) => b.toggleAttribute("aria-current", i === ci)); }
+  const lim = limit();
+  $("#chaps").querySelectorAll("button").forEach(b => { const lock = +b.dataset.t > lim; b.disabled = lock; b.title = lock ? "Answer the earlier questions first" : ""; });
+}
+function status(text) { $("#status").textContent = text; }
+
+/* ---------- questions ---------- */
+function ask(q) {
+  R = { c: q, phase: "main", bi: 0, order: order(q, "main"), bOrder: null };
+  $("#endcard").hidden = true;
+  $("#qcard").hidden = false; drawQ();
+  status(mode === "video" ? "The video has paused for a question." : "");
+  setTimeout(() => $("#qcard").scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" }), 50);
+}
+const curQ = () => R.phase === "back" ? R.c.b[R.bi] : R.c;
+const curOrder = () => R.phase === "back" ? R.bOrder : R.order;
+
+function drawQ() {
+  const c = R.c, q = curQ(), ord = curOrder(), idx = QUESTIONS.indexOf(c) + 1;
+  let label, cls = "";
+  if (R.phase === "main") label = `Question ${idx} of ${QUESTIONS.length}`;
+  else if (R.phase === "back") { label = `Back-up question ${R.bi + 1} of ${c.b.length}`; cls = "backup"; }
+  else { label = `Second try · Question ${idx}`; cls = "retry"; }
+  const trail = R.phase === "main" ? "" : `<div class="trail"><b class="done">Question</b>${c.b.map((_, k) => `<i>→</i><b class="${R.phase === "back" && R.bi === k ? "on" : (R.phase === "retry" || R.bi > k ? "done" : "")}">Back-up ${k + 1}</b>`).join("")}<i>→</i><b class="${R.phase === "retry" ? "on" : ""}">Second try</b></div>`;
+  const rewatch = mode === "video" ? `<button type="button" class="linkbtn" id="rewatch">Rewatch this part (${mmss(c.from)}–${mmss(c.t)})</button>` : "";
+  $("#qzone").innerHTML = `
+    <div class="qhead"><span class="stage ${cls}">${label}</span><span class="at">at ${mmss(c.t)}</span>${rewatch}</div>${trail}
+    <p class="stem">${esc(q.q)}</p>
+    <div class="opts" id="opts">${ord.map((oi, pos) => `<button type="button" class="opt" data-oi="${oi}" id="opt-${pos}"><span class="k">${LET[pos]}</span><span>${esc(q.o[oi])}</span><span class="mark"></span></button>`).join("")}</div>
+    <div class="log" id="log" aria-live="polite"></div>
+    <div class="actions" id="actions"></div>`;
+  $("#opts").querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => choose(+b.dataset.oi)));
+  const rw = $("#rewatch"); if (rw) rw.addEventListener("click", () => { player.seekTo(c.from, true); player.playVideo(); status(`Replaying from ${mmss(c.from)}. The video will stop again at the question.`); $("#vcard").scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" }); });
+}
+function letter(oi) { return LET[curOrder().indexOf(oi)]; }
+function lock(chosen, correct, reveal) {
+  $("#opts").querySelectorAll(".opt").forEach(b => {
+    const oi = +b.dataset.oi; b.disabled = true;
+    if (oi === chosen && chosen === correct) { b.classList.add("right"); b.querySelector(".mark").textContent = "Correct"; }
+    else if (oi === chosen) { b.classList.add("wrong"); b.querySelector(".mark").textContent = "Your answer"; }
+    else if (oi === correct && reveal) { b.classList.add("right"); b.querySelector(".mark").textContent = "Answer"; }
+    else b.classList.add("dim");
+  });
+}
+function msg(kind, title, text) { const d = document.createElement("div"); d.className = "msg " + kind; d.innerHTML = (title ? `<h3>${esc(title)}</h3>` : "") + `<p>${esc(text)}</p>`; $("#log").appendChild(d); }
+function actions(list) {
+  const a = $("#actions"); a.innerHTML = "";
+  list.forEach((it, k) => { const b = document.createElement("button"); b.type = "button"; b.className = "btn" + (it.ghost ? " ghost" : ""); b.textContent = it.label; b.addEventListener("click", it.go); a.appendChild(b); if (k === 0) setTimeout(() => { b.focus({ preventScroll: true }); b.scrollIntoView({ block: "nearest", behavior: reduceMotion ? "auto" : "smooth" }); }, 0); });
+}
+function focusFirst() { const b = $("#opt-0"); if (b) b.focus({ preventScroll: true }); }
+
+function choose(oi) {
+  const c = R.c, q = curQ();
+  if (R.phase === "back") {
+    const ok = oi === q.a; lock(oi, q.a, true);
+    msg(ok ? "good" : "bad", ok ? "Correct" : `The answer is ${letter(q.a)}`, q.x);
+    const last = R.bi === c.b.length - 1;
+    actions([{ label: last ? "Try the question again" : "Next back-up question", go: () => {
+      if (last) { R.phase = "retry"; const was = R.order.indexOf(c.a); R.order = orderFor(4, c.a, shuffle([0, 1, 2, 3].filter(p => p !== was))[0]); drawQ(); msg("hint", "Second try", "The options are in a new order, so read them carefully."); }
+      else { R.bi++; R.bOrder = order(c.b[R.bi], "back"); drawQ(); }
+      focusFirst();
+    } }]);
+    return;
+  }
+  const ok = oi === c.a;
+  if (R.phase === "main") {
+    lock(oi, c.a, false);
+    if (ok) { msg("good", "Correct", c.x); record("first"); }
+    else {
+      msg("bad", `Not quite: ${letter(oi)} isn't right`, c.w[oi] || "That isn't the right answer.");
+      msg("hint", "Let's check the basics", `Answer ${c.b.length} short back-up questions, then try this one again. You can rewatch this part of the video first if you like.`);
+      actions([{ label: "Start the back-up questions", go: () => { R.phase = "back"; R.bi = 0; R.bOrder = order(c.b[0], "back"); drawQ(); focusFirst(); } }]);
+    }
+    return;
+  }
+  lock(oi, c.a, true);
+  if (ok) { msg("good", "Got it on the second try", c.x); record("help"); }
+  else { msg("bad", `Not this time. The answer is ${letter(c.a)}`, (c.w[oi] ? c.w[oi] + " " : "") + c.x); record("miss"); }
+}
+
+function record(result) {
+  P.res[R.c.id] = result; save(); renderBar();
+  const n = nextQ();
+  const cont = () => { R = null; $("#qcard").hidden = true; status(""); if (mode === "video" && ready) { $("#vcard").scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" }); player.playVideo(); } };
+  if (n && (n.t === R.c.t || mode === "novideo")) actions([{ label: "Next question", go: () => { R = null; ask(n); } }]);
+  else if (n) actions([{ label: "Continue the video", go: cont }]);
+  else actions([{ label: "See your summary", go: () => { R = null; $("#qcard").hidden = true; showEnd(true); } }].concat(mode === "video" ? [{ label: "Watch the end of the video", ghost: true, go: cont }] : []));
+}
+
+/* ---------- summary ---------- */
+function showEnd(scroll) {
+  const n = QUESTIONS.length, c = { first: 0, help: 0, miss: 0 };
+  QUESTIONS.forEach(k => { if (P.res[k.id]) c[P.res[k.id]]++; });
+  const pts = c.first + c.help * 0.5, fmt = v => (v % 1 ? Math.floor(v) + "½" : String(v));
+  const tagName = r => r === "first" ? "First try" : r === "help" ? "After help" : "Revisit";
+  const e = $("#endcard");
+  e.innerHTML = `<div class="eyebrow">Summary</div>
+    <div class="big">${fmt(pts)}<small> / ${n}</small></div>
+    <p>${c.first} right first time · ${c.help} right after the back-up questions · ${c.miss} to revisit</p>
+    <div class="passed">${QUESTIONS.map(q => `<div><span class="tag ${P.res[q.id]}">${tagName(P.res[q.id])}</span><span>${esc(q.q)}</span></div>`).join("")}</div>
+    <h2>Key points</h2><ol class="keys">${SUMMARY.map(t => `<li>${esc(t)}</li>`).join("")}</ol>
+    <div class="actions"><button type="button" class="btn ghost" id="restart">Start again</button><span id="confirm" class="note"></span></div>`;
+  e.hidden = false;
+  let armed = false;
+  $("#restart").addEventListener("click", () => {
+    if (!armed) { armed = true; $("#confirm").textContent = "This clears your answers. Click again to confirm."; setTimeout(() => { armed = false; const el = $("#confirm"); if (el) el.textContent = ""; }, 5000); return; }
+    P = { res: {} }; save(); e.hidden = true; renderBar(); status("");
+    if (mode === "video" && ready) { player.seekTo(0, true); player.pauseVideo(); $("#vcard").scrollIntoView({ block: "start" }); } else ask(nextQ());
+  });
+  if (scroll) setTimeout(() => e.scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" }), 50);
+}
+
+document.addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey || !R) return;
+  const i = "ABCD".indexOf(e.key.toUpperCase()); const j = i >= 0 ? i : "1234".indexOf(e.key);
+  if (j >= 0 && e.key.length === 1) { const b = $("#opt-" + j); if (b && !b.disabled) { e.preventDefault(); b.click(); } }
+});
+
+renderChapters(); renderBar(); renderTranscript(); paintTime(0);
+if (allDone()) showEnd(false);
+
+</script>
+</body>
+</html>
